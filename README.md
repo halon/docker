@@ -66,3 +66,27 @@ To get the password for the `elastic` user you can run the below command.
 ```
 kubectl -n elastic-stack get secret elasticsearch-es-elastic-user -o go-template='{{.data.elastic | base64decode}}{{"\n"}}'
 ```
+
+### Prometheus
+
+You can use the following commands to install Prometheus in Kubernetes
+
+```
+minikube addons enable metrics-server
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install halon-kps prometheus-community/kube-prometheus-stack \
+--set prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false \
+--set prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues=false \
+--set-json prometheus.prometheusSpec.serviceMonitorSelector={} \
+--set-json prometheus.prometheusSpec.serviceMonitorNamespaceSelector={} \
+--set-json prometheus.prometheusSpec.podMonitorSelector={} \
+--set-json prometheus.prometheusSpec.podMonitorNamespaceSelector={}
+helm install halon-pa prometheus-community/prometheus-adapter \
+  --set prometheus.url=http://prometheus-operated.default.svc.cluster.local \
+  --set prometheus.port=9090 \
+  --set rules.default=true
+```
+
+Then enable `global.smtpd.prometheus.enabled` in `main/values.yaml`.
+You should now be able to for example autoscale on the `halon_queue_queue_active_size` metric.
