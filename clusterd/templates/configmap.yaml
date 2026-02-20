@@ -8,7 +8,7 @@ metadata:
 data:
   clusterd.yaml: |
     version: "1.1"
-    listen:
+    listener:
       port: {{ .Values.global.clusterd.service.port }}
     environment:
       privdrop:
