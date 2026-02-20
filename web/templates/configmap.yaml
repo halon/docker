@@ -7,7 +7,7 @@ metadata:
     {{- include "web.labels" . | nindent 4 }}
 data:
   web.yaml: |
-    version: "1.23"
+    version: "1.27"
     listeners:
       - port: {{ .Values.global.web.service.port }}
     hosts: {{- if and (not .Values.global.smtpd.enabled) (not .Values.global.rated.enabled) }} []{{- end }}

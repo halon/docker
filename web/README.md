@@ -17,7 +17,7 @@ To build a container image, simply run the below command, substituting `ubuntu-2
 ```
 HALON_REPO_USER=exampleuser
 HALON_REPO_PASS=examplepass
-docker build -t halon/web:1.23.0 -f images/ubuntu-24.04/Dockerfile \
+docker build -t halon/web:1.27.0 -f images/ubuntu-24.04/Dockerfile \
              --build-arg HALON_REPO_USER=${HALON_REPO_USER} \
              --build-arg HALON_REPO_PASS=${HALON_REPO_PASS} \
              --platform=linux/amd64 \

@@ -12,7 +12,7 @@ RUN echo "baseurl=https://${HALON_REPO_USER}:${HALON_REPO_PASS}@repo.halon.io/di
 RUN echo "gpgcheck=1" >> /etc/yum.repos.d/Halon.repo
 RUN echo "gpgkey=https://raw.githubusercontent.com/halon/pgp-keys/master/pgp-keys/7F0A73B5.asc" >> /etc/yum.repos.d/Halon.repo
 RUN echo "enabled=1" >> /etc/yum.repos.d/Halon.repo
-RUN tdnf install -y halon-web-1.23.0
+RUN tdnf install -y halon-web-1.27.0
 
 ENV NODE_ENV=production
 
