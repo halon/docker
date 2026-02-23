@@ -10,6 +10,13 @@ data:
     version: "1.1"
     listener:
       port: {{ .Values.global.clusterd.service.port }}
+    pki:
+      certificate:
+        path: /etc/halon/tls/controlsocket-server/tls.crt
+      privatekey:
+        path: /etc/halon/tls/controlsocket-server/tls.key
+      clientcerts:
+        - path: /etc/halon/tls/smtpd-controlsocket-client-crt/tls.crt
     environment:
       privdrop:
         user: clusterd

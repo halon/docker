@@ -52,6 +52,12 @@ spec:
               mountPath: /var/spool/halon/queue
             - name: config
               mountPath: /etc/halon
+            - name: tls-ca-crt
+              mountPath: /etc/halon/tls/ca-crt
+            - name: tls-controlsocket-server
+              mountPath: /etc/halon/tls/controlsocket-server
+            - name: tls-controlsocket-client
+              mountPath: /etc/halon/tls/controlsocket-client
         - name: api
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
@@ -69,10 +75,28 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/halon
+            - name: tls-ca-crt
+              mountPath: /etc/halon/tls/ca-crt
+            - name: tls-controlsocket-client
+              mountPath: /etc/halon/tls/controlsocket-client
+            - name: tls-api
+              mountPath: /etc/halon/tls/api
       volumes:
         - name: config
           configMap:
             name: {{ include "smtpd.fullname" . }}
+        - name: tls-ca-crt
+          configMap:
+            name: halon-tls-ca-crt
+        - name: tls-controlsocket-server
+          secret:
+            secretName: {{ include "smtpd.fullname" . }}-tls-controlsocket-server
+        - name: tls-controlsocket-client
+          secret:
+            secretName: {{ include "smtpd.fullname" . }}-tls-controlsocket-client
+        - name: tls-api
+          secret:
+            secretName: {{ include "smtpd.fullname" . }}-api-tls
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -17,6 +17,10 @@ data:
         expand: true
         processes:
           - smtpd
+        tls:
+          enabled: true
+          verify: true
+          verifyname: "{{ .Release.Name }}-smtpd-api.{{ .Release.Namespace }}.svc.cluster.local"
       {{- end }}
       {{- if .Values.global.rated.enabled }}
       - address: "{{ .Release.Name }}-rated-api.{{ .Release.Namespace }}.svc.cluster.local"

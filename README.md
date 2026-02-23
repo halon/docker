@@ -41,8 +41,91 @@ Some additional settings can also be found in the `values.yaml` files inside eac
 To deploy the Helm charts first build the images as described in each subfolder and then run the following commands:
 
 ```
+RELEASE=halon
+NAMESPACE=default
 helm dependency update main
-helm install halon main --render-subchart-notes
+helm install ${RELEASE} main --render-subchart-notes --namespace ${NAMESPACE} --create-namespace
+```
+
+### TLS
+
+To enable TLS communication between the control sockets of the different pods run the below commands.
+
+#### Create a CA
+
+```
+DAYS=3650
+NUMBITS=4096
+CN=halon-ca
+
+openssl genrsa -out halon-ca.key ${NUMBITS}
+openssl req -x509 -new -nodes -sha256 -days ${DAYS} -key halon-ca.key -out halon-ca.crt -subj "/CN=${CN}"
+
+kubectl -n "${NAMESPACE}" create configmap halon-tls-ca-crt --from-file=tls.crt=halon-ca.crt
+```
+
+#### Generate `smtpd` controlsocket server certificate and key
+
+```
+DAYS=3650
+NUMBITS=2048
+CN="${RELEASE}-smtpd.${NAMESPACE}.svc"
+SAN="DNS:${RELEASE}-smtpd,DNS:${RELEASE}-smtpd.${NAMESPACE},DNS:${RELEASE}-smtpd.${NAMESPACE}.svc,DNS:${RELEASE}-smtpd.${NAMESPACE}.svc.cluster.local"
+
+openssl genrsa -out ${RELEASE}-smtpd-controlsocket-server.key ${NUMBITS}
+openssl req -new -sha256 -key ${RELEASE}-smtpd-controlsocket-server.key -out ${RELEASE}-smtpd-controlsocket-server.csr -subj "/CN=${CN}"
+openssl x509 -req -sha256 -days ${DAYS} -in ${RELEASE}-smtpd-controlsocket-server.csr -CA halon-ca.crt -CAkey halon-ca.key -CAcreateserial -out ${RELEASE}-smtpd-controlsocket-server.crt -extfile <(printf "subjectAltName=%s" "${SAN}")
+
+kubectl -n "${NAMESPACE}" create secret tls ${RELEASE}-smtpd-tls-controlsocket-server --cert=${RELEASE}-smtpd-controlsocket-server.crt --key=${RELEASE}-smtpd-controlsocket-server.key
+kubectl -n "${NAMESPACE}" create configmap ${RELEASE}-smtpd-tls-controlsocket-server-crt --from-file=tls.crt=${RELEASE}-smtpd-controlsocket-server.crt
+```
+
+#### Generate `smtpd` controlsocket client certificate and key
+
+```
+DAYS=3650
+NUMBITS=2048
+CN="${RELEASE}-smtpd.${NAMESPACE}.svc"
+SAN="DNS:${RELEASE}-smtpd,DNS:${RELEASE}-smtpd.${NAMESPACE},DNS:${RELEASE}-smtpd.${NAMESPACE}.svc,DNS:${RELEASE}-smtpd.${NAMESPACE}.svc.cluster.local"
+
+openssl genrsa -out ${RELEASE}-smtpd-controlsocket-client.key ${NUMBITS}
+openssl req -new -sha256 -key ${RELEASE}-smtpd-controlsocket-client.key -out ${RELEASE}-smtpd-controlsocket-client.csr -subj "/CN=${CN}"
+openssl x509 -req -sha256 -days ${DAYS} -in ${RELEASE}-smtpd-controlsocket-client.csr -CA halon-ca.crt -CAkey halon-ca.key -CAcreateserial -out ${RELEASE}-smtpd-controlsocket-client.crt -extfile <(printf "subjectAltName=%s" "${SAN}")
+
+kubectl -n "${NAMESPACE}" create secret tls ${RELEASE}-smtpd-tls-controlsocket-client --cert=${RELEASE}-smtpd-controlsocket-client.crt --key=${RELEASE}-smtpd-controlsocket-client.key
+kubectl -n "${NAMESPACE}" create configmap ${RELEASE}-smtpd-tls-controlsocket-client-crt --from-file=tls.crt=${RELEASE}-smtpd-controlsocket-client.crt
+```
+
+#### Generate `clusterd` controlsocket server certificate and key
+
+```
+DAYS=3650
+NUMBITS=2048
+CN="${RELEASE}-clusterd.${NAMESPACE}.svc"
+SAN="DNS:${RELEASE}-clusterd,DNS:${RELEASE}-clusterd.${NAMESPACE},DNS:${RELEASE}-clusterd.${NAMESPACE}.svc,DNS:${RELEASE}-clusterd.${NAMESPACE}.svc.cluster.local"
+
+openssl genrsa -out ${RELEASE}-clusterd-controlsocket-server.key ${NUMBITS}
+openssl req -new -sha256 -key ${RELEASE}-clusterd-controlsocket-server.key -out ${RELEASE}-clusterd-controlsocket-server.csr -subj "/CN=${CN}"
+openssl x509 -req -sha256 -days ${DAYS} -in ${RELEASE}-clusterd-controlsocket-server.csr -CA halon-ca.crt -CAkey halon-ca.key -CAcreateserial -out ${RELEASE}-clusterd-controlsocket-server.crt -extfile <(printf "subjectAltName=%s" "${SAN}")
+
+kubectl -n "${NAMESPACE}" create secret tls ${RELEASE}-clusterd-tls-controlsocket-server --cert=${RELEASE}-clusterd-controlsocket-server.crt --key=${RELEASE}-clusterd-controlsocket-server.key
+kubectl -n "${NAMESPACE}" create configmap ${RELEASE}-clusterd-tls-controlsocket-server-crt --from-file=tls.crt=${RELEASE}-clusterd-controlsocket-server.crt
+```
+
+#### Generate `smtpd-api` web server certificate and key
+
+```
+DAYS=3650
+NUMBITS=2048
+CN="${RELEASE}-smtpd-api.${NAMESPACE}.svc"
+SAN="DNS:${RELEASE}-smtpd-api,DNS:${RELEASE}-smtpd-api.${NAMESPACE},DNS:${RELEASE}-smtpd-api.${NAMESPACE}.svc,DNS:${RELEASE}-smtpd-api.${NAMESPACE}.svc.cluster.local"
+
+openssl genrsa -out ${RELEASE}-smtpd-api.key ${NUMBITS}
+openssl req -new -sha256 -key ${RELEASE}-smtpd-api.key \-out ${RELEASE}-smtpd-api.csr -subj "/CN=${CN}"
+openssl x509 -req -sha256 -days ${DAYS} -in ${RELEASE}-smtpd-api.csr -CA halon-ca.crt -CAkey halon-ca.key -CAcreateserial -out ${RELEASE}-smtpd-api.crt -extfile <(printf "subjectAltName=%s" "${SAN}")
+
+kubectl -n "${NAMESPACE}" create secret tls ${RELEASE}-smtpd-api-tls --cert=${RELEASE}-smtpd-api.crt --key=${RELEASE}-smtpd-api.key
+kubectl -n "${NAMESPACE}" create configmap ${RELEASE}-smtpd-api-tls-crt --from-file=tls.crt=${RELEASE}-smtpd-api.crt
 ```
 
 ### Elasticsearch

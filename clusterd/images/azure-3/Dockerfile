@@ -17,4 +17,8 @@ RUN tdnf install -y halon-clusterd-1.1.2
 RUN groupadd -g 2000 clusterd
 RUN useradd -u 2000 -g 2000 clusterd
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["sh", "-c", "exec env LD_LIBRARY_PATH=/opt/halon/lib/clusterd/:$LD_LIBRARY_PATH /opt/halon/sbin/clusterd -f"]

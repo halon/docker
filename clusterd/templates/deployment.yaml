@@ -47,10 +47,25 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/halon
+            - name: tls-ca-crt
+              mountPath: /etc/halon/tls/ca-crt
+            - name: tls-controlsocket-server
+              mountPath: /etc/halon/tls/controlsocket-server
+            - name: tls-smtpd-controlsocket-client-crt
+              mountPath: /etc/halon/tls/smtpd-controlsocket-client-crt
       volumes:
         - name: config
           configMap:
             name: {{ include "clusterd.fullname" . }}
+        - name: tls-ca-crt
+          configMap:
+            name: halon-tls-ca-crt
+        - name: tls-controlsocket-server
+          secret:
+            secretName: {{ include "clusterd.fullname" . }}-tls-controlsocket-server
+        - name: tls-smtpd-controlsocket-client-crt
+          configMap:
+            name: halon-smtpd-tls-controlsocket-client-crt
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

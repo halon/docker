@@ -48,10 +48,15 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/halon
+            - name: tls-ca-crt
+              mountPath: /etc/halon/tls/ca-crt
       volumes:
         - name: config
           configMap:
             name: {{ include "web.fullname" . }}
+        - name: tls-ca-crt
+          configMap:
+            name: halon-tls-ca-crt
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
