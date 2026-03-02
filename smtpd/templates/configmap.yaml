@@ -44,6 +44,8 @@ data:
     cluster:
       address: "{{ .Release.Name }}-clusterd.{{ .Release.Namespace }}.svc.cluster.local"
       port: {{ .Values.global.clusterd.service.port }}
+      startup:
+        hosts: {{ .Values.replicaCount }}
     {{- end }}
     monitor:
       listener:
