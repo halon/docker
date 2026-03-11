@@ -50,15 +50,10 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /etc/halon
-            - name: stats
-              mountPath: /var/lib/halon/policyd
       volumes:
         - name: config
           configMap:
             name: {{ include "policyd.fullname" . }}
-        - name: stats
-          persistentVolumeClaim:
-            claimName: "{{ include "policyd.fullname" . }}"
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

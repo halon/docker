@@ -17,7 +17,7 @@ To build a container image, simply clone the repository to your machine and from
 ```
 HALON_REPO_USER=exampleuser
 HALON_REPO_PASS=examplepass
-docker build -t halon/policyd:1.0.4 -f images/ubuntu-24.04/Dockerfile \
+docker build -t halon/policyd:1.0.7 -f images/ubuntu-24.04/Dockerfile \
              --build-arg HALON_REPO_USER=${HALON_REPO_USER} \
              --build-arg HALON_REPO_PASS=${HALON_REPO_PASS} \
              --platform=linux/amd64 \

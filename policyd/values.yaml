@@ -41,6 +41,3 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
-
-storage: 10Gi
-storageClassName: ""

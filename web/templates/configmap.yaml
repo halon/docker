@@ -14,7 +14,9 @@ data:
       {{- if .Values.global.smtpd.enabled }}
       - address: "{{ .Release.Name }}-smtpd-api.{{ .Release.Namespace }}.svc.cluster.local"
         port: {{ .Values.global.smtpd.api.service.port }}
-        expand: true
+        kubernetes:
+          namespace: {{ .Release.Namespace }}
+          name: {{ .Release.Name }}-smtpd
         processes:
           - smtpd
         tls:

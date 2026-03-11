@@ -78,6 +78,8 @@ data:
         id: selfsigned-client
         verify: true
         verifyname: "{{ .Release.Name }}-clusterd.{{ .Release.Namespace }}.svc.cluster.local"
+      startup:
+        hosts: {{ .Values.replicaCount }}
     {{- end }}
     monitor:
       listener:
