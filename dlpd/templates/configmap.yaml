@@ -7,7 +7,7 @@ metadata:
     {{- include "dlpd.labels" . | nindent 4 }}
 data:
   dlpd.yaml: |
-    version: "10.0"
+    version: "10.2"
     environment:
       controlsocket:
         port: {{ .Values.controlSocketPort }}
@@ -18,10 +18,10 @@ data:
         group: dlpd
       umask: "0027"
   dlpd-app.yaml: |-
-    version: "10.0"
+    version: "10.2"
     rules: []
   dlpctl.yaml: |
-    version: "10.0"
+    version: "10.2"
     environment:
       controlsocket:
         port: {{ .Values.controlSocketPort }}
