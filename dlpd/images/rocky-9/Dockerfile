@@ -12,7 +12,7 @@ RUN echo "baseurl=https://${HALON_REPO_USER}:${HALON_REPO_PASS}@repo.halon.io/di
 RUN echo "gpgcheck=1" >> /etc/yum.repos.d/Halon.repo
 RUN echo "gpgkey=https://raw.githubusercontent.com/halon/pgp-keys/master/pgp-keys/7F0A73B5.asc" >> /etc/yum.repos.d/Halon.repo
 RUN echo "enabled=1" >> /etc/yum.repos.d/Halon.repo
-RUN yum install -y halon-dlpd-10.1.0
+RUN yum install -y halon-dlpd-10.2.0
 
 RUN /usr/bin/install -d /var/run/halon
 
@@ -23,4 +23,4 @@ RUN chown dlpd:dlpd /var/spool/halon/tmp
 RUN /usr/bin/install -d var/spool/halon/tmp/dlpd
 RUN chown dlpd:dlpd /var/spool/halon/tmp/dlpd
 
-CMD ["sh", "-c", "exec env LD_LIBRARY_PATH=/opt/halon/lib/dlpd/:$LD_LIBRARY_PATH /opt/halon/sbin/dlpd -f"]
+CMD ["/opt/halon/sbin/dlpd", "-f"]

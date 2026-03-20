@@ -7,7 +7,7 @@ metadata:
     {{- include "rated.labels" . | nindent 4 }}
 data:
   rated.yaml: |
-    version: "10.0"
+    version: "10.2"
     key: {{ .Values.clusterSyncKey }}
     reresolve: 5
     environment:
@@ -19,12 +19,12 @@ data:
         user: rated
         group: rated
   rated-app.yaml: |
-    version: "10.0"
+    version: "10.2"
     peers:
       - address: "{{ include "rated.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
         expand: true
   ratectl.yaml: |
-    version: "10.0"
+    version: "10.2"
     environment:
       controlsocket:
         port: {{ .Values.controlSocketPort }}
