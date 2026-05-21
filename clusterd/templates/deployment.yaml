@@ -65,7 +65,7 @@ spec:
             secretName: {{ include "clusterd.fullname" . }}-tls-controlsocket-server
         - name: tls-smtpd-controlsocket-client-crt
           configMap:
-            name: halon-smtpd-tls-controlsocket-client-crt
+            name: {{ .Release.Name }}-smtpd-tls-controlsocket-client-crt
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
