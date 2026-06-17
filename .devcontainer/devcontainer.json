@@ -24,7 +24,7 @@
 	"postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder}",
 
 	// Use 'postStartCommand' to run commands after the container is created like starting minikube.
-	"postStartCommand": "minikube start --driver=docker && echo 'eval $(minikube docker-env)' >> ~/.bashrc",
+	"postStartCommand": "bash .devcontainer/post-start.sh",
 
 	// Configure tool-specific properties.
 	"customizations": {
