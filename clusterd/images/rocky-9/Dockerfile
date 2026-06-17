@@ -17,4 +17,4 @@ RUN yum install -y halon-clusterd-1.1.2
 RUN groupadd -g 2000 clusterd
 RUN useradd -u 2000 -g 2000 clusterd
 
-CMD ["sh", "-c", "exec env LD_LIBRARY_PATH=/opt/halon/lib/clusterd/:$LD_LIBRARY_PATH /opt/halon/sbin/clusterd -f"]
+CMD [ "/opt/halon/sbin/clusterd", "-f" ]
