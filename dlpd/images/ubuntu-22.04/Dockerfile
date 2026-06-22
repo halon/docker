@@ -18,7 +18,7 @@ RUN groupadd -g 2000 dlpd
 RUN useradd -u 2000 -g 2000 dlpd
 RUN chown dlpd:dlpd /var/spool/halon/
 RUN chown dlpd:dlpd /var/spool/halon/tmp
-RUN /usr/bin/install -d var/spool/halon/tmp/dlpd
+RUN /usr/bin/install -d /var/spool/halon/tmp/dlpd
 RUN chown dlpd:dlpd /var/spool/halon/tmp/dlpd
 
 CMD ["/opt/halon/sbin/dlpd", "-f"]
