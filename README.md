@@ -59,7 +59,7 @@ helm install elastic-operator elastic/eck-operator -n elastic-system --create-na
 helm install es-quickstart elastic/eck-stack -n elastic-stack --create-namespace --set=eck-kibana.enabled=false
 ```
 
-You should now have an Elasticsearch service running on `https://elasticsearch-es-default.elastic-stack.svc.cluster.local:9200`.
+You should now have an Elasticsearch service running on `https://elasticsearch-es-http.elastic-stack.svc.cluster.local:9200`.
 
 To get the password for the `elastic` user you can run the below command.
 
