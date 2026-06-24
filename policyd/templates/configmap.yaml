@@ -7,7 +7,7 @@ metadata:
     {{- include "policyd.labels" . | nindent 4 }}
 data:
   policyd.yaml: |
-    version: "1.0"
+    version: "1.1"
     listeners:
       - port: {{ .Values.global.policyd.service.port }}
     websocket:
@@ -16,7 +16,6 @@ data:
     {{- if .Values.global.elasticsearch.enabled }}
     elasticsearch:
       index:
-        history: halon-delivery-attempts
         actions: halon-policyd-actions
       nodes:
         - url: {{ .Values.global.elasticsearch.url }}
@@ -27,6 +26,6 @@ data:
       {{- end }}
     {{- end }}
   policyd-app.yaml: |
-    version: "1.0"
+    version: "1.1"
     ips: {}
 {{- end }}
