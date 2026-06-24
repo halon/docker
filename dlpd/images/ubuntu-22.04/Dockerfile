@@ -12,13 +12,10 @@ RUN echo "deb https://repo.halon.io/ jammy stable" >> /etc/apt/sources.list.d/ha
 RUN echo "machine repo.halon.io login ${HALON_REPO_USER} password ${HALON_REPO_PASS}" >> /etc/apt/auth.conf
 RUN apt-get update && apt-get install -y halon-dlpd=10.2.0
 
-RUN /usr/bin/install -d /var/run/halon
-
 RUN groupadd -g 2000 dlpd
 RUN useradd -u 2000 -g 2000 dlpd
-RUN chown dlpd:dlpd /var/spool/halon/
-RUN chown dlpd:dlpd /var/spool/halon/tmp
-RUN /usr/bin/install -d /var/spool/halon/tmp/dlpd
-RUN chown dlpd:dlpd /var/spool/halon/tmp/dlpd
+
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/halon
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/spool/halon/tmp/dlpd
 
 CMD ["/opt/halon/sbin/dlpd", "-f"]

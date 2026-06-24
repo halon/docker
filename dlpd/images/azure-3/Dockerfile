@@ -14,13 +14,10 @@ RUN echo "gpgkey=https://raw.githubusercontent.com/halon/pgp-keys/master/pgp-key
 RUN echo "enabled=1" >> /etc/yum.repos.d/Halon.repo
 RUN tdnf install -y  halon-dlpd-10.2.0
 
-RUN /usr/bin/install -d /var/run/halon
-
 RUN groupadd -g 2000 dlpd
 RUN useradd -u 2000 -g 2000 dlpd
-RUN chown dlpd:dlpd /var/spool/halon/
-RUN chown dlpd:dlpd /var/spool/halon/tmp
-RUN /usr/bin/install -d /var/spool/halon/tmp/dlpd
-RUN chown dlpd:dlpd /var/spool/halon/tmp/dlpd
+
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/halon
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/spool/halon/tmp/dlpd
 
 CMD ["/opt/halon/sbin/dlpd", "-f"]

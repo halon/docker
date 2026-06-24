@@ -13,9 +13,6 @@ data:
         port: {{ .Values.controlSocketPort }}
       socket:
         port: {{ .Values.global.dlpd.service.port }}
-      privdrop:
-        user: dlpd
-        group: dlpd
       umask: "0027"
   dlpd-app.yaml: |-
     version: "10.2"

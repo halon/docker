@@ -14,9 +14,9 @@ RUN echo "gpgkey=https://raw.githubusercontent.com/halon/pgp-keys/master/pgp-key
 RUN echo "enabled=1" >> /etc/yum.repos.d/Halon.repo
 RUN tdnf install -y  halon-rated-10.2.0
 
-RUN /usr/bin/install -d /var/run/halon
-
 RUN groupadd -g 2000 rated
 RUN useradd -u 2000 -g 2000 rated
+
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/halon
 
 CMD ["/opt/halon/sbin/rated", "-f"]

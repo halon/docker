@@ -7,9 +7,7 @@ metadata:
     {{- include "savdid.labels" . | nindent 4 }}
 data:
   savdid.conf: |
-    pidfile: /var/run/savdid.pid
-    # user: savdid
-    # group: savdid
+    pidfile: /var/run/savdid/savdid.pid
     threadcount: 30
     maxqueuedsessions: 50
     virusdatadir: /var/sav/vdbs

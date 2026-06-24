@@ -14,12 +14,11 @@ RUN . /etc/lsb-release && echo "deb [arch=`dpkg --print-architecture` signed-by=
 RUN echo "machine repo.halon.io login ${HALON_REPO_USER} password ${HALON_REPO_PASS}" >> /etc/apt/auth.conf
 RUN apt-get update && apt-get install -y halon=6.10.5 halon-extras-k8s-hqfmove=1.1.0
 
-RUN /usr/bin/install -d /var/run/halon
-
 RUN groupadd -g 2000 smtpd
 RUN useradd -u 2000 -g 2000 smtpd
-RUN chown smtpd:smtpd /var/spool/halon/
-RUN chown smtpd:smtpd /var/spool/halon/tmp
+
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/halon
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/spool/halon
 
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh

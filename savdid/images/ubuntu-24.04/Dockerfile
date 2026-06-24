@@ -23,4 +23,6 @@ RUN apt-get install -y wget zip
 RUN groupadd -g 2000 savdid
 RUN useradd -u 2000 -g 2000 savdid
 
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/savdid
+
 CMD [ "/opt/savdid/bin/savdid", "-c", "/etc/savdid/savdid.conf" ]

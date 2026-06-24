@@ -17,11 +17,8 @@ RUN yum install -y sasid-5.1.3
 RUN groupadd -g 2000 sasid
 RUN useradd -u 2000 -g 2000 sasid
 
-RUN mkdir -p /var/sasid/data
-RUN chown sasid:sasid /var/sasid/data
-RUN chmod 750 /var/sasid/data
-RUN mkdir -p /var/sasid/rsync
-RUN chown sasid:sasid /var/sasid/rsync
-RUN chmod 750 /var/sasid/rsync
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/sasid/data
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/sasid/rsync
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/log/sasid
 
 CMD [ "/opt/sasid/bin/sasid", "-c", "/etc/sasid/sasid.conf" ]

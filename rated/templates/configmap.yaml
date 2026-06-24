@@ -15,9 +15,6 @@ data:
         port: {{ .Values.controlSocketPort }}
       socket:
         port: {{ .Values.global.rated.service.port }}
-      privdrop:
-        user: rated
-        group: rated
   rated-app.yaml: |
     version: "10.2"
     peers:
@@ -33,9 +30,6 @@ data:
     listeners:
       - port: {{ .Values.global.rated.api.service.port }}
     environment:
-      privdrop:
-        user: api
-        group: api
       controlsockets:
         rated:
           port: {{ .Values.controlSocketPort }}

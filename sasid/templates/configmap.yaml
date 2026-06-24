@@ -12,7 +12,7 @@ data:
     #                   Engine Config                            #
     #                                                            #
     ##############################################################
-    LOG_FILE = /var/log/sasid.log
+    LOG_FILE = /var/log/sasid/sasid.log
     DEBUG_LEVEL = ERROR
     CONSOL_OUTPUT = TRUE
     LOG_SIZE = 10485760 

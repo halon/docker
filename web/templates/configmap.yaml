@@ -29,10 +29,6 @@ data:
       {{- end }}
     reresolve: 5
     users: {{ toYaml .Values.users | nindent 6 }}
-    environment:
-      privdrop:
-        user: web
-        group: web
     {{- if .Values.global.elasticsearch.enabled }}
     elasticsearch:
       index:

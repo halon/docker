@@ -17,12 +17,7 @@ RUN yum install -y expurgate-spamd-4.54.1
 RUN groupadd -g 2000 expurgate
 RUN useradd -u 2000 -g 2000 expurgate
 
-RUN mkdir -p /var/log/expurgate-spamd
-RUN chown expurgate:expurgate /var/log/expurgate-spamd
-RUN chmod 750 /var/log/expurgate-spamd
-
-RUN mkdir -p /var/spool/expurgate-spamd
-RUN chown expurgate:expurgate /var/spool/expurgate-spamd
-RUN chmod 750 /var/spool/expurgate-spamd
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/log/expurgate-spamd
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/spool/expurgate-spamd
 
 CMD [ "/usr/bin/expurgate-spamd", "--no-daemonize", "--config", "/etc/expurgate-spamd/expurgate-spamd.conf" ]

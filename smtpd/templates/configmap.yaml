@@ -33,13 +33,10 @@ data:
         version: 4
       controlsocket:
         port: {{ .Values.controlSocketPort }}
-      privdrop:
-        user: smtpd
-        group: smtpd
       umask: "0027"
       rlimit:
         nofile: 70000
-      licensekey: /license.key
+      licensekey: /var/run/halon/license.key
     {{- if .Values.global.clusterd.enabled }}
     cluster:
       address: "{{ .Release.Name }}-clusterd.{{ .Release.Namespace }}.svc.cluster.local"
@@ -100,9 +97,6 @@ data:
     listeners:
       - port:  {{ .Values.global.smtpd.api.service.port }}
     environment:
-      privdrop:
-        user: api
-        group: api
       controlsockets:
         smtpd:
           port: {{ .Values.controlSocketPort }}

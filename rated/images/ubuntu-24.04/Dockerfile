@@ -12,9 +12,9 @@ RUN . /etc/lsb-release && echo "deb [arch=`dpkg --print-architecture` signed-by=
 RUN echo "machine repo.halon.io login ${HALON_REPO_USER} password ${HALON_REPO_PASS}" >> /etc/apt/auth.conf
 RUN apt-get update && apt-get install -y halon-rated=10.2.0
 
-RUN /usr/bin/install -d /var/run/halon
-
 RUN groupadd -g 2000 rated
 RUN useradd -u 2000 -g 2000 rated
+
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/halon
 
 CMD ["/opt/halon/sbin/rated", "-f"]
