@@ -3,4 +3,4 @@ name: savdid
 description: A Helm chart for Kubernetes
 type: application
 version: 0.1.0
-appVersion: "3.93.1"
+appVersion: "3.99.0"

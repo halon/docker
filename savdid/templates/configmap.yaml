@@ -12,6 +12,7 @@ data:
     maxqueuedsessions: 50
     virusdatadir: /var/sav/vdbs
     idedir: /var/sav/vdbs
+    savidir: /etc/SAVI/lib
 
     onexception: REQUEST
     onrequest: REQUEST

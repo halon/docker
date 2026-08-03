@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y apt-transport-https ca-certificates
 RUN wget -O- https://raw.githubusercontent.com/halon/pgp-keys/master/pgp-keys/7F0A73B5.gpg >> /usr/share/keyrings/halon-archive-keyring.gpg
 RUN . /etc/lsb-release && echo "deb [arch=`dpkg --print-architecture` signed-by=/usr/share/keyrings/halon-archive-keyring.gpg] https://repo.halon.io/ $DISTRIB_CODENAME stable" >> /etc/apt/sources.list.d/halon.list
 RUN echo "machine repo.halon.io login ${HALON_REPO_USER} password ${HALON_REPO_PASS}" >> /etc/apt/auth.conf
-RUN apt-get update && apt-get install -y savdid=3.93.1
+RUN apt-get update && apt-get install -y savdid=3.99.0
 
 RUN wget -qO - https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 RUN chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
