@@ -18,8 +18,9 @@ data:
     onrequest: REQUEST
 
     log {
-        type: CONSOLE
-        loglevel: 0
+        type: FILE
+        logdir: /var/log/savdid
+        loglevel: 1
     }
     channel {
         commprotocol {
@@ -64,8 +65,9 @@ data:
     status=$?
 
     if [ $status -eq 2 ]; then
-        # An exit status of 2 means that an update was available which requires the deployment to restart
-        kubectl rollout restart deployment/{{ include "savdid.fullname" . }} -n {{ .Release.Namespace }}
+        # An exit status of 2 means that an update was available
+        date +%s > /var/sav/vdbs/.reload.tmp
+        mv /var/sav/vdbs/.reload.tmp /var/sav/vdbs/.reload
         exit 0
     fi
 

@@ -12,17 +12,16 @@ RUN . /etc/lsb-release && echo "deb [arch=`dpkg --print-architecture` signed-by=
 RUN echo "machine repo.halon.io login ${HALON_REPO_USER} password ${HALON_REPO_PASS}" >> /etc/apt/auth.conf
 RUN apt-get update && apt-get install -y savdid=3.99.0
 
-RUN wget -qO - https://pkgs.k8s.io/core:/stable:/v1.31/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-RUN chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-RUN echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.31/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
-RUN chmod 644 /etc/apt/sources.list.d/kubernetes.list
-RUN apt-get update && apt-get install -y kubectl
-
 RUN apt-get install -y wget zip
 
 RUN groupadd -g 2000 savdid
 RUN useradd -u 2000 -g 2000 savdid
 
 RUN /usr/bin/install -d -m 0770 -g 2000 /var/run/savdid
+RUN /usr/bin/install -d -m 0770 -g 2000 /var/log/savdid
 
-CMD [ "/opt/savdid/bin/savdid", "-c", "/etc/savdid/savdid.conf" ]
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod 755 /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]
+
+CMD [ "/opt/savdid/bin/savdid", "-d", "-c", "/etc/savdid/savdid.conf" ]
