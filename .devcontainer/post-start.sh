@@ -16,7 +16,7 @@ for i in $(seq 1 60); do
 done
 
 echo "Starting minikube..."
-minikube start --driver=docker
+minikube start --driver=docker --container-runtime=docker
 
 line='eval $(minikube docker-env)'
 touch "$HOME/.bashrc"
